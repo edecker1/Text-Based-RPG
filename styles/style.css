@@ -1,0 +1,120 @@
+.fight {
+  text-align: center;
+}
+
+.enemy {
+  padding:10px;
+  text-align:center;
+}
+
+.bg {
+  background-color: darkgrey;
+}
+
+.inventory {
+  background-color: black;
+  color: white;
+  padding: 20px;
+  border: 2px solid white;
+  border-radius: 10px;
+}
+
+.directions {
+  padding: 8px;
+  padding-left:10px;
+  padding-right:10px;
+}
+
+button + button {
+    margin-left: 25px;
+}
+
+.high {
+  color:green;
+}
+
+.mid {
+  color: yellow;
+}
+
+.low {
+  color: red;
+}
+
+.enemys {
+  color: red;
+  font-size: 20px;
+  font-family: "Times New Roman", Times, serif;
+}
+
+.players {
+  color: blue;
+  font-size: 20px;
+  font-family: "Times New Roman", Times, serif;
+}
+.boxMan {
+  background-color: black;
+  color: white;
+  margin: auto;
+  width: 300px;
+  height: 125px;
+  overflow: scroll;
+  text-align: center;
+  scroll-behavior: smooth;
+}
+
+.boxText {
+    color: white;
+    text-align: center;
+    font-size: .75em;
+
+}
+
+.header {
+  text-align: center;
+  background-color: white;
+  padding: 10px;
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.hit {
+  color: lightgreen;
+}
+
+.miss {
+  color: yellow;
+}
+
+.hurt {
+  color:red;
+}
+
+.dodge {
+  color: white;
+}
+
+@font-face {
+  font-family: basicFantasy;
+  src: url(fonts/AtlasoftheMagi.ttf);
+}
+
+@font-face {
+  font-family: title;
+  src: url(fonts/warmongerbb.ttf);
+}
+
+.title {
+  font-family: title;
+}
+
+.fantasy {
+  font-family: basicFantasy;
+}
+
+.logo {
+  height: 100px;
+  width: 100px;
+}
