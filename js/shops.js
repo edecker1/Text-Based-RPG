@@ -1,6 +1,13 @@
 // SHOP FUNCTIONS //
 
 // VILLAGE SHOPS // 
+class Shop {
+  constructor(name, intro, items) {
+    this.name = name;
+    this.intro = intro;
+    this.items = items;
+  }
+}
 
 function shop() {
   clear();

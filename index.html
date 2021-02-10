@@ -10,12 +10,15 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
+    
+    <script src="js/misc.js" defer></script>
     <script src="js/saveSystem.js" defer></script>
     <script src="js/magic.js" defer></script>
     <script src="js/combat.js" defer></script>
+    <script src="js/battle.js" defer></script>
     <script src="js/items.js" defer></script>
-    <script src="js/playerObjects.js" defer></script>
-    <script src="js/gm.js" defer></script>
+    <script src="js/player.js" defer></script>
+    <script src="js/GameManager.js" defer></script>
     <script src="js/travel.js" defer></script>
     <script src="js/enemy.js" defer></script>
     <script src="js/shops.js" defer></script>
@@ -30,11 +33,11 @@
     </div>
     <div class = 'fight' id="start">
       <br>
-      <h4>Welcome hero to your journey!</h3>
+      <h4>Welcome Hero! Your journey awaits!</h3>
       <br>
       <h5>What would you like to do?</h2>
       <br>
-      <button class='btn btn-dark' onclick='createHero()'>Create New</button>
+      <button class='btn btn-dark' onclick='GameManager.createHero()'>Create New</button>
       <br>
       <br>
       <button class='btn btn-light' onclick='loadScreen()'>Load Hero</button>

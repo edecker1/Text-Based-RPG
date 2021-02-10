@@ -15,6 +15,7 @@ class Attack{
     return total;
   }
 }
+
 // Atack objects
 let weapon = new Attack('attacks with', 0, 0); // default attack
 // Beasts

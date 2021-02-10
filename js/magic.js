@@ -44,11 +44,6 @@ var rebirth = new HealingSpell("Rebirth", "Calls down the power of the heaven to
 var godsMight = new Spell("Judgement", "Summons the almighty judgement from the Gods above to discipline the enemy.", 300, 20, 20);
 var damn = new Spell("Damnation", "Persuade the devil to damn the enemy's soul, causing them eternal pain!", 23, 20);
 
-// List of spells in order of leveling up
-var spellList = [fireBall, iceShard, healingHands, deathlyTouch, regenerate, lightning, hellFire, arcaneMissiles, rebirth, godsMight, damn];
-//This shows what the palyer crrently has. 1 = has, 0 = not
-var playerSpells = [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
-
 // Store Spells
 var darkSpear = new Spell('Necrotic Spear', 'Gathering the spirits of the death, they form a spear capable of stripping a show', 350, 15, 20)
 
