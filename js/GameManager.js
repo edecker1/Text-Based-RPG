@@ -162,7 +162,9 @@ let GameManager = {
 
   levelUp : function() {
     console.log("STarting")
-    clear();
+    this.clear();
+    let a = me.maxHp;
+    let b = me.maxMp;
     me.level = me.level + 1;
     var audio = new Audio('Sounds/QuestCompleted.wav');
     audio.play();
@@ -171,7 +173,7 @@ let GameManager = {
     me.maxHp += 15;
     me.mp = me.maxMp;
     me.hp = me.maxHp;
-    me.xp = (me.xp - cap);
+    me.xp = (me.xp - me.cap);
     cap = (me.level * 100) / 2;
     console.log("XP: " + me.xp);
     let perc = (me.xp / me.cap) * 100;
@@ -180,12 +182,10 @@ let GameManager = {
     battleTime = false;
     if (unlock === 'Nothing') {
       console.log("Nothing was unlocked");
-      let getStart = document.getElementById('start');
-      getStart.innerHTML = "<div class='container'><h2 class='display-2'>Congratulations!</h2><br><h4>You have leveled up from <span class='badge badge-secondary'>"+(me.level-1)+"</span> to <span class='badge badge-secondary'>"+(me.level)+"</span>!</h4><br><br><h4><span class='badge badge-danger'>"+a+" health</span> -> <span class='badge badge-danger'>"+me.maxHp+" health</span></h4><h4><span class='badge badge-info'>"+b+" mana</span> -> <span class='badge badge-info'>"+me.maxMp+" mana<span></h4><br><h4><span class='badge badge-pill badge-success'>Endurance</span>: "+(me.end - 1)+" -> "+me.end+"</h4><h4><span class='badge badge-pill badge-danger'>Strength</span>: "+(me.str - 1)+" -> "+me.str+"</h4><h4><span class='badge badge-pill badge-warning'>Dexterity</span>: "+(me.dext - 1)+" -> "+me.dext+"</h4><h4><span class='badge badge-pill badge-primary'>Intelligence</span>: "+(me.inte - 1)+" -> "+me.inte+"</h4><br><button class='btn btn-dark' onclick='standBy()'>Continue</button></div>";
+      this.start.innerHTML = "<div class='container'><h2 class='display-2'>Congratulations!</h2><br><h4>You have leveled up from <span class='badge badge-secondary'>"+(me.level-1)+"</span> to <span class='badge badge-secondary'>"+(me.level)+"</span>!</h4><br><br><h4><span class='badge badge-danger'>"+a+" health</span> -> <span class='badge badge-danger'>"+me.maxHp+" health</span></h4><h4><span class='badge badge-info'>"+b+" mana</span> -> <span class='badge badge-info'>"+me.maxMp+" mana<span></h4><br><h4><span class='badge badge-pill badge-success'>Endurance</span>: "+(me.end - 1)+" -> "+me.end+"</h4><h4><span class='badge badge-pill badge-danger'>Strength</span>: "+(me.str - 1)+" -> "+me.str+"</h4><h4><span class='badge badge-pill badge-warning'>Dexterity</span>: "+(me.dext - 1)+" -> "+me.dext+"</h4><h4><span class='badge badge-pill badge-primary'>Intelligence</span>: "+(me.inte - 1)+" -> "+me.inte+"</h4><br><button class='btn btn-dark' onclick='GameManager.goback()'>Continue</button></div>";
     }
      else {
-      let getStart = document.getElementById('start');
-      getStart.innerHTML = "<div class='container'><h2 class='display-2'>Congratulations!</h2><br><h4>You have leveled up from <span class='badge badge-secondary'>"+(me.level-1)+"</span> to <span class='badge badge-secondary'>"+(me.level)+"</span>!</h4><h4>You unlocked "+unlock.name+"!</h4><h4>"+unlock.description+"</h4><br><br><h4><span class='badge badge-danger'>"+a+" health</span> -> <span class='badge badge-danger'>"+me.maxHp+" health</span></h4><h4><span class='badge badge-info'>"+b+" mana</span> -> <span class='badge badge-info'>"+me.maxMp+" mana<span></h4><br><h4><span class='badge badge-pill badge-success'>Endurance</span>: "+(me.end - 1)+" -> "+me.end+"</h4><h4><span class='badge badge-pill badge-danger'>Strength</span>: "+(me.str - 1)+" -> "+me.str+"</h4><h4><span class='badge badge-pill badge-warning'>Dexterity</span>: "+(me.dext - 1)+" -> "+me.dext+"</h4><h4><span class='badge badge-pill badge-primary'>Intelligence</span>: "+(me.inte - 1)+" -> "+me.inte+"</h4><br><button class='btn btn-dark' onclick='standBy()'>Continue</button></div>";
+      this.start.innerHTML = "<div class='container'><h2 class='display-2'>Congratulations!</h2><br><h4>You have leveled up from <span class='badge badge-secondary'>"+(me.level-1)+"</span> to <span class='badge badge-secondary'>"+(me.level)+"</span>!</h4><h4>You unlocked "+unlock.name+"!</h4><h4>"+unlock.description+"</h4><br><br><h4><span class='badge badge-danger'>"+a+" health</span> -> <span class='badge badge-danger'>"+me.maxHp+" health</span></h4><h4><span class='badge badge-info'>"+b+" mana</span> -> <span class='badge badge-info'>"+me.maxMp+" mana<span></h4><br><h4><span class='badge badge-pill badge-success'>Endurance</span>: "+(me.end - 1)+" -> "+me.end+"</h4><h4><span class='badge badge-pill badge-danger'>Strength</span>: "+(me.str - 1)+" -> "+me.str+"</h4><h4><span class='badge badge-pill badge-warning'>Dexterity</span>: "+(me.dext - 1)+" -> "+me.dext+"</h4><h4><span class='badge badge-pill badge-primary'>Intelligence</span>: "+(me.inte - 1)+" -> "+me.inte+"</h4><br><button class='btn btn-dark' onclick='GameManager.goback()'>Continue</button></div>";
     }
     console.log("finished leveling up");
   },

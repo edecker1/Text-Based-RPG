@@ -1,8 +1,8 @@
 // ENEMY FUNCTIONS AND VARIABLES
 // Class for Enemy Attacks //
 class Attack{
-  constructor(name, qDice, die){
-    this.name = name;
+  constructor(action, qDice, die){
+    this.action = action;
     this.qDice = qDice;
     this.die = die;
   }
@@ -44,9 +44,10 @@ let orcYell = new Attack(', with the power of his ancestors, screams at', 10, 6)
 // BANDIT KING //
 let sneakySlash = new Attack('uses misdirection to doublke slash', 10, 6);
 let backstab = new Attack('kicks you around and backstabs', 7, 20);
-// Enemy Variables
-function Enemy (name, description, maxHp, hp, maxMp, mp, equipped, armor, ac, xp, attacks){
-     this.name = name;
+
+class Enemy {
+  constructor(name, description, maxHp, hp, maxMp, mp, equipped, armor, xp, attack){
+    this.name = name;
      this.description = description;
      this.maxHp = maxHp;
      this.hp = hp;
@@ -56,10 +57,35 @@ function Enemy (name, description, maxHp, hp, maxMp, mp, equipped, armor, ac, xp
      this.armor = armor;
      this.ac = this.armor.ac;
      this.xp = xp;
-     this.attacks = attacks;
-   }
+     this.attacks = [weapon];
+     let x;
+     if (attack != null){
+      for (x in attack) {
+        this.attacks.push(x);
+      }
+     }
+  }
+
+  isSpellCaster(){
+    if (this.maxMp > 0){
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  isAlive(){
+    if (this.hp > 0) {
+      return true;
+    } else {
+      return false;
+    }
+  }
 
 
+}
+
+var dog = new Enemy('Rabid Dog', 'A crazed dog on the loose!', 15, 15, 0, 0, claws, fur, 10, [scratch])
 // Default Enemy
 let enemy = new Enemy('Rabid Dog', 'A crazed dog on the loose!', 15, 15, 0, 0, claws, fur, fur.ac, 10, [weapon]);
 

@@ -5,10 +5,12 @@ let Battle = {
   start : document.getElementById('start'),
   player : document.getElementById('player'),
   stand : document.getElementById('standby'),
-  enemys : document.getElementById('enemy'),
+  enemy : document.getElementById('enemy'),
   interactive : document.getElementById('interactive'),
   shop : document.getElementById('shop'),
   textbox : document.getElementById('textBox'),
+
+  e : null,
 
   clear : function() {
     this.start.innerHTML = "";
@@ -47,7 +49,7 @@ let Battle = {
     let text = "";
     let i = 0;
     for (spell of me.abilities){
-      text = text + "<button title='"+ spell.description+"' id= '"+i+"' class='btn btn-info dropdown-item' onclick ='Combat.cast(me.abilities["+i+"])'>"+spell.name+"</button>";
+      text = text + "<button title='"+ spell.description+"' id= '"+i+"' class='btn btn-info dropdown-item' onclick ='Combat.castSpell(me.abilities["+i+"])'>"+spell.name+"</button>";
       i += 1;
     }
     return text;
@@ -78,17 +80,17 @@ let Battle = {
     $( "#startCombat" ).prepend( '<p class = "boxText '+cssClass+'"> ' + text + ' </p>');
   },
 
-  enemyInfo : function(enemy) {
-    if (enemy.mp > 0) {
-      this.enemys.innerHTML = "<h4>Enemy</h4><h6 title=' " + enemy.description + "'>Name: <small><span " + color2(1) + "> " + enemy.name + "</span></small></h6><h6>Health: <small><span " + color(enemy.hp, enemy.maxHp) + ">" + enemy.hp + "</span> / " + enemy.maxHp + "</small></h6><h6>Mana: <small><span " + color(enemy.mp, enemy.maxMp) + ">" + enemy.mp + "</span> / " + enemy.maxMp + "</small></h6><h6 title='"+ enemy.equipped.description +"'>Weapon: <small>" + enemy.equipped.name + "</small></h6><h6 title='"+ enemy.armor.description + "'>Armor: <small>" + enemy.armor.name + "</small></h6>";
+  enemyInfo : function() {
+    if (this.e.isSpellCaster() === true) {
+      this.enemy.innerHTML = "<h4>Enemy</h4><h6 title=' " + this.e.description + "'>Name: <small><span " + color2(1) + "> " + this.e.name + "</span></small></h6><h6>Health: <small><span " + color(this.e.hp, this.e.maxHp) + ">" + this.e.hp + "</span> / " + this.e.maxHp + "</small></h6><h6>Mana: <small><span " + color(this.e.mp, this.e.maxMp) + ">" + this.e.mp + "</span> / " + this.e.maxMp + "</small></h6><h6 title='"+ this.e.equipped.description +"'>Weapon: <small>" + this.e.equipped.name + "</small></h6><h6 title='"+ this.e.armor.description + "'>Armor: <small>" + this.e.armor.name + "</small></h6>";
     } else {
-      this.enemys.innerHTML = "<h3>Enemy</h3><h6 title=' " + enemy.description + "'>Name: <small><span " + color2(1) + "> "  + enemy.name + "</span></small></h6><h6>Health: <small><span " + color(enemy.hp, enemy.maxHp) + ">" + enemy.hp + "</span> / " + enemy.maxHp + "</small></h6><h6 title='"+ enemy.equipped.description +"'>Weapon: <small>" + enemy.equipped.name + "</small></h6><h6 title='"+ enemy.armor.description + "'>Armor: <small>" + enemy.armor.name + "</small></h6>";
+      this.enemy.innerHTML = "<h3>Enemy</h3><h6 title=' " + this.e.description + "'>Name: <small><span " + color2(1) + "> "  + this.e.name + "</span></small></h6><h6>Health: <small><span " + color(this.e.hp, this.e.maxHp) + ">" + this.e.hp + "</span> / " + this.e.maxHp + "</small></h6><h6 title='"+ this.e.equipped.description +"'>Weapon: <small>" + this.e.equipped.name + "</small></h6><h6 title='"+ this.e.armor.description + "'>Armor: <small>" + this.e.armor.name + "</small></h6>";
     }
   },
 
   newBattle : function() {
     GameManager.clear();
-    newEnemy();
+    this.newEnemy();
     this.playerInfo();
     this.interactiveInfo();
     this.textBoxStart();
@@ -104,7 +106,11 @@ let Battle = {
 
   winScreen : function() {
     GameManager.clear()
-    start.innerHTML = "<br><div class='container'><h4>Congratulations! You have defeated "+enemy.name+"!</h4><br><h5>You have gained <span class='badge badge-warning'>"+loot()+" gold coins<span>!</h5></div><br><button class='btn btn-dark' onclick='standBy()'>Back</button>"
+    start.innerHTML = "<br><div class='container'><h4>Congratulations! You have defeated "+this.e.name+"!</h4><br><h5>You have gained <span class='badge badge-warning'>"+Combat.loot()+" gold coins<span>!</h5></div><br><button class='btn btn-dark' onclick='GameManager.goback()'>Back</button>"
+  },
+
+  newEnemy : function() {
+    this.e = new Enemy('Rabid Dog', 'A crazed dog on the loose!', 15, 15, 0, 0, claws, fur, 40, [scratch]);
   }
 
 

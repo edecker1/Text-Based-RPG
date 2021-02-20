@@ -27,7 +27,8 @@ class Player extends Stats {
      this.mp = 35;
      this.equipped = equipped;
      this.armor = armor;
-     this.ac = this.setAc();
+     this.ac = 0;
+     this.setAc();
      this.x = x;
      this.y = y;
      this.maxHp = 0;
@@ -95,6 +96,14 @@ class Player extends Stats {
     this.setAc();
   }
 
+  checkUnlock(){
+    if (this.level in this.abilityList){
+      return true;
+    } else {
+      return false;
+    }
+  }
+
   levelUp() {
     let a = diceRoll(3);
     let b = diceRoll(3);
@@ -111,8 +120,9 @@ class Player extends Stats {
     this.hp = this.maxHp;
     this.mp = this.maxMp;
 
-    if (this.abilityList.hasAttribute(this.level)){
-      let newAbility = this.abilityList.this.level;
+    if (this.checkUnlock() === true){
+      let x = this.level;
+      let newAbility = this.abilityList[x];
       this.abilities.push(newAbility);
       return newAbility;
     } else {

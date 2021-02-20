@@ -7,9 +7,11 @@ var Combat = {
     let chance = diceRoll(20);
     console.log("Initial chance = " + chance)
     if (object.name != me.name){
+      console.log("Player attack")
       chance += Math.round(me.dext / 10)
       console.log("Chance after bonus = " + chance)
     }
+    console.log("Chance is " + chance + " versus " + object.name + "'s " + object.ac);
     if (chance >= object.ac) {
       return true;
     }
@@ -18,17 +20,23 @@ var Combat = {
     }
   },
 
-  enemyAttack : function(enemy) {
+  enemyAttack : function() {
+    console.log("Enemy attack")
     let hitChance = this.hit(me);
+    console.log("Hitchance is " + hitChance)
     // If the attack hits
     if (hitChance == true){
-      let random = Math.floor(Math.random() * enemy.attacks.length);
-      let attack = enemy.attacks[random]
-      console.log("ENEMY ATTACK IS " + attack)
+      let random = Math.floor(Math.random() * Battle.e.attacks.length);
+      let attack = Battle.e.attacks[random];
+      let x;
+      for x in Battle.e.attacks{
+        console.log(x.action)
+      }
+      console.log("Battle.e ATTACK IS " + attack.action)
       // If the attack is just using their weapon
       if (attack == weapon){
-        let dmg = enemy.equipped.attack();
-        let txt = enemy.name + " attacks and does " + dmg + " damage!";
+        let dmg = Battle.e.equipped.attack();
+        let txt = Battle.e.name + " attacks and does " + dmg + " damage!";
         console.log(txt);
         Battle.addText(txt, 'hurt');
         me.hp = me.hp - dmg;
@@ -40,10 +48,10 @@ var Combat = {
         // If a spell
         if (attack instanceof Spell){
           let dmg = attack.attack();
-          let txt = enemy.name + " casts " + attack.name + " and does " + dmg + " damage!";
+          let txt = Battle.e.name + " casts " + attack.name + " and does " + dmg + " damage!";
           Battle.addText(txt, 'hurt')
           me.hp = me.hp - dmg;
-          enemy.mp -= attack.cost;
+          Battle.e.mp -= attack.cost;
           if (me.hp <= 0) {
             this.lose()
           } 
@@ -52,7 +60,7 @@ var Combat = {
         // Normal Attacks
         else {
           let dmg = attack.dmg();
-          let txt = enemy.name + " " + attack.name + " and does " + dmg + " damage!";
+          let txt = Battle.e.name + " " + attack.name + " and does " + dmg + " damage!";
           Battle.addText(txt, 'hurt')
           me.hp = me.hp - dmg;
           if (me.hp <= 0) {
@@ -61,14 +69,14 @@ var Combat = {
         }
       } 
     } else {
-      let txt = enemy.name + " attacks, but you dodge!";
+      let txt = Battle.e.name + " attacks, but you dodge!";
       console.log(txt);
       Battle.addText(txt, 'dodge');
     }
   },
 
-  playerAttack : function(enemy) {
-    let hitChance = hit(enemy);
+  playerAttack : function() {
+    let hitChance = this.hit(Battle.e);
     if (hitChance == true) {
       me.hit += 1;
       let dmg = me.equipped.attack();
@@ -78,7 +86,7 @@ var Combat = {
       let text = "You do " + dmg + " damage!";
       console.log(text);
       Battle.addText(text, 'hit');
-      enemy.hp = enemy.hp - dmg;
+      Battle.e.hp = Battle.e.hp - dmg;
       Battle.battlePage();
     }
     else {
@@ -86,7 +94,7 @@ var Combat = {
       let text = "You've attacked, but the enemy dodges!";
       Battle.addText(text, 'miss');
     }
-    if (enemy.hp <= 0){
+    if (Battle.e.hp <= 0){
         this.win()
       }
     else {
@@ -95,7 +103,7 @@ var Combat = {
     }
   },
 
-  castSpell : function(spell, enemy) {
+  castSpell : function(spell) {
     //Checks if its a healing spell
     if (spell instanceof HealingSpell){
       // Yes Healing
@@ -112,7 +120,7 @@ var Combat = {
         else {
           me.hp = me.hp + heal; // add heal to health
         }
-        this.enemyAttack();
+        this.Battle.eAttack();
         Battle.battlePage();
         } else {
           alert("You do not have enough mana!");
@@ -121,7 +129,7 @@ var Combat = {
     } else {
       // Attack Spell
       if (me.mp >= spell.cost) {
-        let hitChance = this.hit(enemy);
+        let hitChance = this.hit(Battle.e);
         if (hitChance == true) {
           let dmg = spell.attack();
           let extra = me.inte * .25;
@@ -129,14 +137,14 @@ var Combat = {
           dmg = dmg + extra;
           me.mp = me.mp - spell.cost;
           Battle.addText("You cast " + spell.name + " and do " + dmg + "!", 'hit')
-          enemy.hp = enemy.hp - dmg;
+          Battle.e.hp = Battle.e.hp - dmg;
           Battle.battlePage();
         }
         else{
           Battle.addText("You cast " + spell.name + " but you miss!", 'miss');
           me.mp = me.mp - spell.cost;
         }
-        if (enemy.hp <= 0){
+        if (Battle.e.hp <= 0){
             this.win()
           }
         else {
@@ -154,14 +162,14 @@ var Combat = {
 
   win : function(){
     me.killed += 1;
-    me.xp = me.xp + enemy.xp;
+    me.xp = me.xp + Battle.e.xp;
     // If player has enough to level up
-    if (me.xp >= cap){
-      levelUpScreen();
+    if (me.xp >= me.cap){
+      GameManager.levelUp();
     // Otherwise usual victory
     } else {
       console.log("XP: " + me.xp);
-      let perc = (me.xp / cap) * 100;
+      let perc = (me.xp / me.cap) * 100;
       me.xpPerc = perc;
       battleTime = false;
       Battle.winScreen();
@@ -184,8 +192,8 @@ var Combat = {
     Battle.battlePage();
   },
 
-  loot : function(enemy) {
-    let g = (Math.floor(enemy.maxHp / 10)) * 2;
+  loot : function() {
+    let g = (Math.floor(Battle.e.maxHp / 10)) * 2;
     me.inventory.gold += g;
     return g;
   },
@@ -201,7 +209,7 @@ var Combat = {
     } else {
       let a = "You try to escape, but you failed!";
       Battle.addText(a);
-      this.enemyAttack();
+      this.Battle.eAttack();
       Battle.battlePage();
     }
   }
