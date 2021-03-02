@@ -28,13 +28,12 @@ var Combat = {
     if (hitChance == true){
       let random = Math.floor(Math.random() * Battle.e.attacks.length);
       let attack = Battle.e.attacks[random];
-      let x;
-      for x in Battle.e.attacks{
-        console.log(x.action)
+      for (const attack of Battle.e.attacks) {
+        console.log(attack.action)
       }
       console.log("Battle.e ATTACK IS " + attack.action)
       // If the attack is just using their weapon
-      if (attack == weapon){
+      if (attack == "weapon"){
         let dmg = Battle.e.equipped.attack();
         let txt = Battle.e.name + " attacks and does " + dmg + " damage!";
         console.log(txt);
@@ -55,12 +54,11 @@ var Combat = {
           if (me.hp <= 0) {
             this.lose()
           } 
-
         } 
         // Normal Attacks
         else {
           let dmg = attack.dmg();
-          let txt = Battle.e.name + " " + attack.name + " and does " + dmg + " damage!";
+          let txt =Battle.e.name + " " + attack.action + " you and does " + dmg + " damage!";
           Battle.addText(txt, 'hurt')
           me.hp = me.hp - dmg;
           if (me.hp <= 0) {
@@ -209,7 +207,7 @@ var Combat = {
     } else {
       let a = "You try to escape, but you failed!";
       Battle.addText(a);
-      this.Battle.eAttack();
+      this.enemyAttack();
       Battle.battlePage();
     }
   }

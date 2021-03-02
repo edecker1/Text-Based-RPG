@@ -1,164 +1,116 @@
-// SHOP FUNCTIONS //
-
-// VILLAGE SHOPS // 
+// this class will have the shop items
 class Shop {
-  constructor(name, intro, items) {
+  constructor(name, shopOwner, intro, items) {
     this.name = name;
+    this.shopOwner = shopOwner;
     this.intro = intro;
     this.items = items;
   }
 }
+// Shops
+var weaponStore = new Shop("Weapon Store", "Nhan the Nimble", "'Welcome to my shop! I am the strongest weapon creator in the land!'", [dagger, sword, axe, hammer, bow]);
+var armorStore = new Shop("Armor Shop", "Timmy the Tanky", "'You lookin' for some armor? You came to the right place!", [clothArmor, leatherArmor, mailArmor]);
+var alchemist = new Shop("Apprentice Alchemist", "Manny the Curious", "'Welcome to my shop! I don't have much, but I got some potions!", [health1, health2, mana1]);
 
-function shop() {
-  clear();
-  let getShop = document.getElementById('shop');
-  let getStand = document.getElementById('standby');
-  getStand.innerHTML = "<h3 class='display-2'>Welcome to the Market!</h3><h4>Where Would You Like to Go?</h4><br><div class='btn-group'><div class='btn-group'><button type='button' class='btn btn-secondary dropdown-toggle' data-toggle='dropdown'>Shops</button><div class='dropdown-menu'><a class='dropdown-item' onclick='weapons()'>Weaponsmith</a><a class='dropdown-item' onclick='armor()'>Armorsmith</a><a class='dropdown-item' onclick='buyGoods()'>General Goods</a></div><button type='button' class='btn btn-secondary' onclick='innKeeper()'>Inn</button><button type='button' class='btn btn-secondary' onclick='alley()'>Dark Alley</button></div></div><br><br><div id='shop'></div>";
-  getShop.innerHTML = "<br><br><button class='btn btn-danger' onclick='standBy()'>Back</button>";
-}
+var cityArmor = new Shop("Legendary Armor Shop", "Jake the Artisan", "'You got money? If you ain't got money, get out!'", [elfArmor, elfArmor2, dwarf, dragon]);
+var cityWeapon = new Shop("Legendary Weapon Store", "Andrew the Dragonslayer", "'I got weapons ready to kill dragons! You got the coin for it?'", [darkStaff, battleAxe, curvedDagger, shortBow]);
+var cityAlchemist = new Shop("Alchemy Store", "Jon the Crafty", "'Welcome to my shop! What drugs- I mean potions do you need?'", [health1, health2, health3, mana1, mana2, mana3]);
 
-// Different Shops
+// This will control all of the stores
+let StoreManager = {
+  // Variables getting the DOM elements
+  start : document.getElementById('start'),
+  player : document.getElementById('player'),
+  stand : document.getElementById('standby'),
+  enemy : document.getElementById('enemy'),
+  interactive : document.getElementById('interactive'),
+  store : document.getElementById('shop'),
+  textbox : document.getElementById('textBox'),
+  
+  // Store objects
+  shopList : [weaponStore, armorStore, alchemist, cityArmor, cityWeapon, cityAlchemist],
 
-// Getting used to arrow notation
-let weapons = () => {
-  clear();
-  let getShop = document.getElementById('standby');
-  getShop.innerHTML = "<h2 class='display-4'>Welcome to the Weapon Shop!</h2><br><h4>What can I get for you today?</h4><br><br><div class='btn-group'><button class='btn btn-dark' onclick='buyWeapons()'>Buy</button><button class='btn btn-light' onclick = 'sell()'>Sell</button></div><button class='btn btn-danger' onclick='shop()'>Back</button> <br>";
-
-}
-
-let armor = () => {
-  clear();
-  let getShop = document.getElementById('standby');
-  getShop.innerHTML = "<h2 class='display-4'>Welcome to the Armor Shop!</h2><br><h4>What can I get for you today?</h4><br><br><div class='btn-group'><button class='btn btn-dark' onclick='buyArmor()'>Buy</button><button class='btn btn-light' onclick = 'sell()'>Sell</button></div><button class='btn btn-danger' onclick='shop()'>Back</button> <br>";
-
-}
-
-let generalGoods = () => {
-  clear();
-  let getShop = document.getElementById('standby');
-  getShop.innerHTML = "<h2 class='display-4'>Welcome to the General Goods Shop!</h2><br><h4>What can I get for you today?</h4><br><br><div class='btn-group'><button class='btn btn-dark' onclick='buyGoods()'>Buy</button><button class='btn btn-light' onclick = 'sell()'>Sell</button></div><button class='btn btn-danger' onclick='shop()'>Back</button> <br>";
-}
-let getValues = (id) => {
-  let number = document.getElementById(id).value;
-  return number;
-}
-
-let buyWeaponsCheckout = () => {
-  console.log('Running...')
-  let a = getValues('dagger');
-  console.log(a)
-  let b = getValues('sword');
-  console.log(b);
-  let c = getValues('axe');
-  console.log(c);
-  let d = getValues('hammer');
-  console.log(d);
-  let e = getValues('bow');
-  console.log(e);
-
-  let quant = [a, b, c, d, e];
-  let i = -1;
-
-  for (value of quant){
-    i = i + 1;
-    console.log(i + " is i");
-    if (value > 0){
-      inventory.buy(shopWeap[i], value);
-      console.log("Bought " + value + " " + shopWeap[i].name);
-    } else {
-      console.log("None bought")
+  // Make table of stock
+  itemsList : function(index){
+    let store = this.shopList[index];
+    let html = "<div class='container'><br><br><table class='table'><thead class='thead-dark'><tr><th>Name</th><th>Description</th><th>Cost</th><th></th></tr></thead><tbody>";
+    for (let i = 0; i < store.items.length; i++) {
+      console.log(store.items[i].name+ " is the name");
+      let item = store.items[i];
+      html += "<tr><td>"+item.name+"</td><td>"+item.description+"</td><td>"+item.cost()+" gold</td><td><input type='number' id='"+i+"' min='0' placeholder='0'></td></tr>";
     }
-  }
-  buyWeapons();
+    html += "</tbody></table><br><button class='btn btn-dark' onclick=' StoreManager.buyItems("+index+")'>Buy Items</button></div>";
+    return html;
+  },
 
-  console.log('Finished..');
-}
+  // StoreFront
+  storeFront : function(index){
+    let store = this.shopList[index];
+    console.log(store)
+    GameManager.clear();
+    this.stand.innerHTML = "<div class='container'><h3>Welcome to the "+store.name+"!</h3><br><h5>This store is owned by <i>"+store.shopOwner+"</i>.</h5><br><h4>"+store.intro+"</h4></div>";
+    this.store.innerHTML = this.itemsList(index) + "<br><br><button class='btn btn-danger' onclick='GameManager.standby()'>Back</button>";
+  },
 
-let buyArmorCheckout = () => {
-  console.log('Running...')
-  let a = getValues('cloth');
-  console.log(a)
-  let b = getValues('leather');
-  console.log(b);
-  let c = getValues('mail');
-  console.log(c);
-
-  let quant = [a, b, c];
-  let i = -1;
-
-  for (value of quant){
-    i = i + 1;
-    console.log(i + " is i");
-    if (value > 0){
-      inventory.buy(shopArm[i], value);
-      console.log("Bought " + value + " " + shopArm[i].name);
-    } else {
-      console.log("None bought")
-    }
-  }
-  buyArmor();
-
-  console.log('Finished..');
-
-}
-let buyWeapons = () => {
-  let getShop = document.getElementById('shop');
-  getShop.innerHTML = "<h5>'Take a look around my wares!'</h5> <br> <h6>You have " + inventory.gold + " gold coins</h6><br><label for='number' title='Costs " + getCost(dagger) + " gold coins'>Dagger:  </label><input id='dagger' type='number' min='0' max='99' name='quantity' value='0'><br><label for='number' title='Costs " + getCost(sword) + " gold coins'>Iron Sword:  </label><input id='sword' type='number' min='0' max='99' name='quantity' value='0'> <br><label for='number' title='Costs " + getCost(axe) + " gold coins'>Axe:  </label><input id='axe' type='number' min='0' max='99' name='quantity' value='0'><br><label for='number' title='Costs " + getCost(hammer) + " gold coins'>Hammer:  </label><input id='hammer' type='number' min='0' max='99' name='quantity' value='0'> <br><label for='number' title='Costs " + getCost(bow) + " gold coins'>Longbow:  </label><input id='bow' type='number' min='0' max='99' name='quantity' value='0'> <br><button class='btn btn-dark' onclick='buyWeaponsCheckout()'>Submit</button></form>";
-}
-
-let buyArmor = () => {
-  let getShop = document.getElementById('shop');
-  getShop.innerHTML = "<h5>'Take a look around my wares!'</h5> <br> <h6>You have " + inventory.gold + " gold coins</h6><br><label for='number' title='Costs " + getCost(clothArmor) + " gold coins'>Cloth Armor:  </label><input id='cloth' type='number' min='0' max='99' name='quantity' value='0'><br><label for='number' title='Costs " + getCost(leatherArmor) + " gold coins'>Leather Armor:  </label><input id='leather' type='number' min='0' max='99' name='quantity' value='0'> <br><label for='number' title='Costs " + getCost(mailArmor) + " gold coins'>Mail Armor:  </label><input id='mail' type='number' min='0' max='99' name='quantity' value='0'><br><br><button class='btn btn-dark' onclick='buyArmorCheckout()'>Submit</button></form>";
-}
-
-let buyGoods = () => {
-  let getShop = document.getElementById('shop');
-  getShop.innerHTML = "<h5>'Take a look around my wares!'</h5> <br> <h6>You have " + inventory.gold + " gold coins</h6><br><label for='number' title='Costs " + getCost(rests) + " gold coins'>Camp Supplies:  </label><input id='rest' type='number' min='0' max='99' name='quantity' value='0'><br><br><button class='btn btn-dark' onclick='buyGoodsCheckout()'>Submit</button></form>";
-
-}
-
-let buyGoodsCheckout = () => {
-  console.log('Running...')
-  let a = getValues('rest');
-
-  if (a > 0){
-    cost = (a * getCost(rests));
-    if (cost > inventory.gold){
-      alert("You do not have enough gold!");
-    }
-    else {
-      inventory.gold = inventory.gold - cost;
-      while (a > 0){
-        me.camps += 1;
-        a -= 1
+  // This will buy all items if value over
+  buyItems : function(index){
+    let store = this.shopList[index];
+    for (let i = 0; i < store.items.length; i++) {
+      let item = store.items[i];
+      var temp = $("#"+i).val();
+      console.log(temp + " is temp")
+      if (temp > 0){
+        let x = temp;
+        while (x > 0) {
+          console.log("You have bought one " + item.name)
+          me.buyItem(item, 1);
+          x -= 1;
+        }
       }
     }
+  },
+
+  weaponShop : function(){
+    this.storeFront(0);
+  },
+
+  armorShop : function() {
+    this.storeFront(1);
+  },
+
+  alchemy : function() {
+    this.storeFront(2);
+  },
+
+  cityWeaponShop : function(){
+    this.storeFront(4);
+  },
+
+  cityArmorShop : function() {
+    this.storeFront(3);
+  },
+
+  cityAlchemy : function() {
+    this.storeFront(5);
+  },
+
+  villageMarket : function(){
+    GameManager.clear();
+    this.stand.innerHTML = "<div class='container'><h3>Welcome to the Village Marketplace!</h3><br><h5>Where would you like to go?</h5><br></div>";
+    this.store.innerHTML = "<div class='container'><div class='btn btn-group'><button class='btn btn-dark' onclick='StoreManager.weaponShop()'>Weapon Shop</button><button class='btn btn-dark' onclick='StoreManager.armorShop()'>Armor Shop</button><button class='btn btn-dark' onclick='StoreManager.alchemy()'>Apprentice Alchemist</button></div><br><br><button class='btn btn-danger' onclick='GameManager.standby()'>Back</button></div>";
+  },
+
+  cityMarket : function() {
+    GameManager.clear();
+    this.stand.innerHTML = "<div class='container'><h3>Welcome to the Village Marketplace!</h3><br><h5>Where would you like to go?</h5><br></div>";
+    this.store.innerHTML = "<div class='container'><div class='btn btn-group'><button class='btn btn-dark' onclick='StoreManager.cityWeaponShop()'>Weapon Shop</button><button class='btn btn-dark' onclick='StoreManager.cityArmorShop()'>Armor Shop</button><button class='btn btn-dark' onclick='StoreManager.cityAlchemy()'>Apprentice Alchemist</button></div><br><br><button class='btn btn-danger' onclick='GameManager.standby()'>Back</button></div>";
   }
 
-  buyGoods();
-
 }
-let sell = () => {
-  let getShop = document.getElementById('shop');
-  getShop.innerHTML = "<h5 id='sellMenu'>What do you wish to sell?<h5>";
-  let a = 0;
-  for (i = 0; i < inventory.items.length; i++){
-    let x = inventory.items[i];
-    console.log(x)
-    $('#sellMenu').append("<br><button id='"+a+"'class='btn btn-secondary' title= 'Worth " + x.value + " gold coins'>" + x.name + "</button><br>")
-    $('#'+a).click(function() {
-      if (x.number == 1){
-        sellItem(x)
-        $(this).toggle();
-      } else {
-        sellItem(x);
-      }
-    });
-    a += 1;
 
-  }
-}
+
+
+// -- BAD CODE MUST REWORK --- //
 
 let innKeeper = () => {
   let getShop = document.getElementById('shop');
@@ -258,145 +210,7 @@ let buyInfo = (loc) => {
 
 // CITY SHOPPING //
 // LETS MAKE THESE ONES FANCIER WITH JQUERY //
-let cityShop = () => {
-  clear();
 
-  document.getElementById("standby").style.display = "none";
-  let getShop = document.getElementById('shop');
-  let getStand = document.getElementById('standby');
-  getStand.innerHTML = "<h3 class='display-2'>Welcome to the Bazaar!</h3><h4>Where Would You Like to Go?</h4><br><div class='btn-group'><div class='btn-group'><button type='button' class='btn btn-secondary dropdown-toggle' data-toggle='dropdown'>Shops</button><div class='dropdown-menu'><a class='dropdown-item' onclick='cityWeapons()'>Master WeaponSmith</a><a class='dropdown-item' onclick='cityArmors()'>Master Armorsmith</a><a class='dropdown-item' onclick='cityAlchemist()'>Alchemist</a></div><button type='button' class='btn btn-secondary' onclick='innKeeper()'>Inn</button><button type='button' class='btn btn-secondary' onclick='cityGang()'>Dark Alley</button><button type='button' class='btn btn-secondary' onclick='wizardTower()'>Wizard Tower</button></div></div><br><br><div id='shop'></div>";
-  getShop.innerHTML = "<br><br><button class='btn btn-danger' onclick='standBy()'>Back</button>";
-  $("#standby").fadeIn(1500);
-  $("#shop").fadeIn(1500);
-}
-
-let cityWeapons = () => {
-  clear();
-  let getShop = document.getElementById('standby');
-  getShop.innerHTML = "<h2 class='display-4'>You are in the presence of a Master Weaponsmith!</h2><br><h4>'What do you want?'</h4><br><br><div class='btn-group'><button class='btn btn-dark' onclick='cityBuyWeapons()'>Buy</button><button class='btn btn-light' onclick = 'sell()'>Sell</button></div><button class='btn btn-danger' onclick='cityShop()'>Back</button> <br>";
-}
-
-let cityBuyWeapons = () => {
-  let getShop = document.getElementById('shop');
-  getShop.innerHTML = "<h5>'Take a look at my masterpieces! Don't touch!'</h5> <br> <h6>You have <span class='badge badge-warning'>" + inventory.gold + " gold coins</span></h6><br><label for='number' title='Costs " + getCost(darkStaff) + " gold coins'>Dark Staff:  </label><input id='darkStaff' type='number' min='0' max='99' name='quantity' value='0'><br><label for='number' title='Costs " + getCost(battleAxe) + " gold coins'>Battle Axe:  </label><input id='battleAxe' type='number' min='0' max='99' name='quantity' value='0'> <br><label for='number' title='Costs " + getCost(curvedDagger) + " gold coins'>Curved Dagger:  </label><input id='curvedDagger' type='number' min='0' max='99' name='quantity' value='0'><br><label for='number' title='Costs " + getCost(shortBow) + " gold coins'>Short Bow:  </label><input id='shortBow' type='number' min='0' max='99' name='quantity' value='0'> <br><br><button class='btn btn-dark' onclick='cityBuyWeaponsCheckout()'>Check Out</button></form>";
-}
-
-let cityAlchemist = () => {
-  let getShop = document.getElementById('shop');
-  getShop.innerHTML = "<h5>'Please do not touch or sniff anything! Especially sniff!'</h5> <br> <h6>You have <span class='badge badge-pill-warning'>" + inventory.gold + " gold coins</span></h6><br><label for='number' title='Costs " + getCost(health1) + " gold coins'>Minor Health Potion: </label><input id='health1' type='number' min='0' max='99' name='quantity' value='0'><label for='number' title='Costs " + getCost(health2) + " gold coins'>Health Potion: </label><input id='health2' type='number' min='0' max='99' name='quantity' value='0'><label for='number' title='Costs " + getCost(health3) + " gold coins'>Major Health Potion: </label><input id='health3' type='number' min='0' max='99' name='quantity' value='0'><label for='number' title='Costs " + getCost(mana1) + " gold coins'>Minor Mana Potion: </label><input id='mana1' type='number' min='0' max='99' name='quantity' value='0'><label for='number' title='Costs " + getCost(mana2) + " gold coins'>Mana Potion: </label><input id='mana2' type='number' min='0' max='99' name='quantity' value='0'><label for='number' title='Costs " + getCost(mana3) + " gold coins'>Major Mana Potion: </label><input id='mana3' type='number' min='0' max='99' name='quantity' value='0'><br><br><button class='btn btn-dark' onclick='cityBuyAlchemist()'>Submit</button></form>";
-
-}
-
-let cityBuyAlchemist = () => {
-  console.log('Running...')
-  let a = getValues('health1');
-  console.log(a)
-  let b = getValues('health2');
-  console.log(b);
-  let c = getValues('health3');
-  console.log(c);
-  let d = getValues('mana1');
-  console.log(d);
-  let e = getValues('mana2');
-  console.log(e);
-  let f = getValues('mana3');
-  console.log(f);
-
-  let quant = [a, b, c, d, e, f];
-  let i = -1;
-
-  for (value of quant){
-    i += 1;
-    console.log(i + " is i");
-    if (value > 0){
-      let z = getCost(inventory.potions[i])
-      if (inventory.gold >= z){
-        inventory.plusPotion
-        inventory.gold -= z
-        console.log("Bought " + value + " " + inventory.potions[i].name);
-      } else {
-        alert("You don't have enough money!")
-      }
-    } else {
-      console.log("None bought")
-    }
-  }
-  cityAlchemist();
-
-  console.log('Finished..');
-
-}
-
-let cityBuyWeaponsCheckout = () => {
-  console.log('Running...')
-  let a = getValues('darkStaff');
-  console.log(a)
-  let b = getValues('battleAxe');
-  console.log(b);
-  let c = getValues('curvedDagger');
-  console.log(c);
-  let d = getValues('shortBow');
-  console.log(d);
-
-  let quant = [a, b, c, d];
-  let i = -1;
-
-  for (value of quant){
-    i = i + 1;
-    console.log(i + " is i");
-    if (value > 0){
-      inventory.buy(cityWeap[i], value);
-      console.log("Bought " + value + " " + cityWeap[i].name);
-    } else {
-      console.log("None bought")
-    }
-  }
-  cityBuyWeapons();
-
-  console.log('Finished..');
-}
-
-let cityArmors = () => {
-  clear();
-  let getShop = document.getElementById('standby');
-  getShop.innerHTML = "<h2 class='display-4'>You are in the presence of a Master Armorsmith!</h2><br><h4>'What do you need? Spit it out! I'm busy!</h4><br><br><div class='btn-group'><button class='btn btn-dark' onclick='cityBuyArmor()'>Buy</button><button class='btn btn-light' onclick = 'sell()'>Sell</button></div><button class='btn btn-danger' onclick='cityShop()'>Back</button> <br>";
-
-}
-
-let cityBuyArmor = () => {
-  let getShop = document.getElementById('shop');
-  getShop.innerHTML = "<h5>'Take a look but don't touch unless you've given me gold!'</h5> <br> <h6>You have <span class='badge badge-warning'>" + inventory.gold + " gold coins</span></h6><br><label for='number' title='Costs " + getCost(darkRobes) + " gold coins'>Dark Robes: </label><input id='darkRobes' type='number' min='0' max='99' name='quantity' value='0'><br><label for='number' title='Costs " + getCost(elfArmor) + " gold coins'>Elf Armor:  </label><input id='elfArmor' type='number' min='0' max='99' name='quantity' value='0'> <br><label for='number' title='Costs " + getCost(dwarf) + " gold coins'>Dwarven Armor:  </label><input id='dwarf' type='number' min='0' max='99' name='quantity' value='0'><br><label for='number' title='Costs " + getCost(dragon) + " gold coins'>Dragonscale Armor:  </label><input id='dragon' type='number' min='0' max='99' name='quantity' value='0'><br><br><button class='btn btn-dark' onclick='cityBuyArmorCheckout()'>Submit</button></form>";
-}
-
-let cityBuyArmorCheckout = () => {
-  console.log('Running...')
-  let a = getValues('darkRobes');
-  console.log(a)
-  let b = getValues('elfArmor');
-  console.log(b);
-  let c = getValues('dwarf');
-  console.log(c);
-  let d = getValues('dragon');
-  console.log(d);
-
-  let quant = [a, b, c, d];
-  let i = -1;
-
-  for (value of quant){
-    i = i + 1;
-    console.log(i + " is i");
-    if (value > 0){
-      inventory.buy(cityArmor[i], value);
-      console.log("Bought " + value + " " + cityArmor[i].name);
-    } else {
-      console.log("None bought")
-    }
-  }
-  cityBuyArmor();
-
-  console.log('Finished..');
-
-}
 
 let wizardTower = () => {
   clear();

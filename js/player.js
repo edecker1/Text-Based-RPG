@@ -171,8 +171,12 @@ class Player extends Stats {
     let cost = item.cost() * quantity;
     if (this.inventory.gold >= cost) {
       this.inventory.gold = this.inventory.gold - cost;
-      for (i=0; i<= quantity; i++){
-        this.inventory.add(item);
+      for (let i = 0 ; i < quantity; i++){
+        if (item instanceof HealingItem || item instanceof ManaItem ){
+          this.inventory.plusPotion(item);
+        } else {
+          this.inventory.add(item);
+        }
       }
     } else {
       alert("You do not have enough money!")
@@ -245,9 +249,11 @@ class Player extends Stats {
         return;
       } else {
         this.x = this.x - 1;
+        console.log("X: " + this.x + " Y: " + this.y);
         this.discover();
         this.traveled += 1;
         let newPlace = this.loc();
+        console.log("New location: " + newPlace.name);
         newPlace.ambush();
       }
     }
@@ -257,9 +263,11 @@ class Player extends Stats {
         return;
       } else {
         this.x = this.x + 1;
+        console.log("X: " + this.x + " Y: " + this.y);
         this.discover();
         this.traveled += 1;
         let newPlace = this.loc();
+        console.log("New location: " + newPlace.name);
         newPlace.ambush();
       }
     }
@@ -269,9 +277,11 @@ class Player extends Stats {
         return;
       } else {
         this.y = this.y + 1;
+        console.log("X: " + this.x + " Y: " + this.y);
         this.discover();
         this.traveled += 1;
         let newPlace = this.loc();
+        console.log("New location: " + newPlace.name);
         newPlace.ambush();
       }
     }
@@ -281,9 +291,11 @@ class Player extends Stats {
         return;
       } else {
         this.y = this.y - 1;
+        console.log("X: " + this.x + " Y: " + this.y);
         this.discover();
         this.traveled += 1;
         let newPlace = this.loc();
+        console.log("New location: " + newPlace.name);
         newPlace.ambush();
       }
     }
@@ -301,7 +313,7 @@ class Player extends Stats {
     gold: 1000,
 
     minusPotion: function(item){
-      for (i = 0; i < this.potions.length; i++){
+      for (let i = 0; i < this.potions.length; i++){
         if (this.potions[i] == item){
           this.potions[i].number -= 1;
           console.log("One removed")
@@ -310,7 +322,7 @@ class Player extends Stats {
     },
 
     plusPotion: function(item){
-      for (i = 0; i < this.potions.length; i++){
+      for (let i = 0; i < this.potions.length; i++){
         if (this.potions[i] == item){
           this.potions[i].number += 1;
           console.log("One added")
@@ -326,22 +338,7 @@ class Player extends Stats {
       this.items.pop(item);
     },
 
-    buy: function(item, quantity){
-      cost = getCost(item);
-      if (this.gold >= cost) {
-        if (this.items.length == 9){
-          alert("You dont have enough space!");
-        } else {
-          this.gold = this.gold - cost;
-          while (quantity > 0){
-            this.add(item);
-            quantity = quantity -1;
-          }
-        }
-      } else {
-        alert("You do not have enough money!")
-      }
-    }
+
     // End functions
   } // End inventory
 } // End Player Object
@@ -349,11 +346,4 @@ class Player extends Stats {
 // Player variable and set up
 // name, level, xp, xps, equipped, armor, x, y, camps
 var me = new Player('Hero', sword, clothArmor, 4, 5, 3);
-
-me.inventory.add(sword);
-me.inventory.add(clothArmor);
-me.inventory.add(clothArmor);
-me.inventory.add(axe);
-me.inventory.add(hammer);
-me.inventory.add(bow);
 

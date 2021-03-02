@@ -84,15 +84,19 @@ let battleAxe = new Weapon('Orc Battle Axe', 'An Orc battle axe, perfect for cle
 let curvedDagger = new Weapon("Curved Dagger", "A prime assasination tool used for disembowling enemies.", 1000, 6, 5);
 let shortBow = new Weapon("Assasin's Bow", "A sleeker, quicker bow than the usual long bow.", 1000, 5);
 
-var cityWeap = [darkStaff, battleAxe, curvedDagger, shortBow]
-var shopWeap = [dagger, sword, axe, hammer, bow];
 //enemy weapons =>
 var claws = new Weapon ('Claws', 'Sharp nails that cause a lot of pain.', 0, 3, 3);
 var sharpClaws = new Weapon('Sharp Claws', 'Sharp claws capabale of piercing flesh like knife through butter.', 0, 4, 3);
+var claws3 = new Weapon("Perilous CLaws", "Claws that are so strong they can destroy rocks with ease.", 0, 6, 5);
 let unarmed = new Weapon('Unarmed', 'Just the fists they was born with.', 0, 2, 4);
 let fangs = new Weapon('Fangs', 'Sharp fangs that inflict a lot of pain', 0, 3, 6);
 let spiritClaws = new Weapon("Spirit Claws", "Ethereal Claws that assault your soul.", 0, 1, 20);
 let banditSword = new Weapon("Bandit King's Sword", "A legendary sword said to have chopped off the heads of hundreds of unlucky villagers!", 0, 1, 20);
+let knife = new Weapon("Knife", "A basic knife often used in kitchens.", 35, 3, 3);
+let dualDaggers = new Weapon("Dual Daggers", "Two daggers often used by assasins.", 300, 5, 5);
+let trident = new Weapon("Trident", "A trident created from the deep sea.", 1000, 7, 7);
+let elvenSword = new Weapon("Elven Sword", "A sword crafted by the finest Elven Blacksmiths", 2000, 8, 8);
+let elfBow = new Weapon("Elven Bow", "A bow of the finest quality.", 4000, 8, 6)
 
 
 // Armor //
@@ -100,27 +104,30 @@ var clothArmor = new Armor("Cloth Armor", "Old reinforced robes that give little
 var leatherArmor = new Armor("Leather Armor", "Some worn leather armor that has seen better days.", 35, 3);
 var mailArmor = new Armor("Mail Armor", "Tattered mail armor that has been used by many soldiers before you", 45, 4);
 
-let shopArm = [clothArmor, leatherArmor, mailArmor];
+
 
 // CITY ARMOR //
 let darkRobes = new Armor("Dark Robes", "Robes imbued with dark energy.", 500, 5);
 let elfArmor = new Armor("Makeshift Elven Armor", "Armor put together from different scavenged parts of elven armor.", 750, 6);
+let elfArmor2 = new Armor("Elven Armor", "Armor made by the finest Elven smiths for the knights of their society.", 1250, 8);
+let elfArmor3 = new Armor("Prestiged Elven Armor", "Armor reserved for only those in the highest place of Elven society", 2000, 10)
 let dwarf = new Armor("Legendary Dwarven Armor", "The strongest armor in the world that protects against almosta anything.", 2000, 7);
 let dragon = new Armor("Dragonscale Armor", "Armor that is one of a kind taht is virtually impossible to hit.", 4000, 8);
-let cityArmor = [darkRobes, elfArmor, dwarf, dragon];
-// Enemy Armor
 
+// Enemy Armor
+var rawFur = new Armor("Torn Fur", "Fur that is very spotty, barely protecting the creature.", 0, 3)
 var fur = new Armor("Rough Fur", "Fur that has some density to it, offering some protection.", 0, 5);
-var fur2 = new Armor("Strong Furs", "This fur is a lot denser than normal fur, offering mild protection", 0, 7);
+var fur2 = new Armor("Reinforced Furs", "This fur is a lot denser than normal fur, offering mild protection", 0, 7);
 var goblinScraps = new Armor("Goblin Rags", "Although these are rags by normal standards, they still offer decent protection.", 0, 8);
 var leather = new Armor("Old Leather Armor", "Battle worn leather armor.", 0, 9);
 let skin = new Armor("Tough Skin", "Toughened skin capable of withstanding many weapons", 0, 9)
-let bones = new Armor("Necrotic Bones", "Bones toughened by Necrotic energies.", 0, 10, 1);
+let bones = new Armor("Necrotic Bones", "Bones toughened by Necrotic energies.", 0, 10);
 let spirit = new Armor("Spirit Form", 'This creature is a spirit and incredibly hard to hit!', 0, 16)
-let water = new Armor("Aquatic Skin", "Skin toughened from the dephs of the ocean.", 0, 13)
-let elvenArmor = new Armor("Elven Armor", "Armor crafted by the finest Elven blacksmiths", 1000, 14)
+let water1 = new Armor("Aquatic Skin", "Skin that is capable of withstanding the wwater for long periods of time", 0, 6);
+let water2 = new Armor("Aquatic Skin", "Skin toughened from the dephs of the ocean.", 0, 13)
 let banditArmor = new Armor("Bandit King's Armor", "Armor that signifies them as the King of the Bandits!", 0, 14)
 let orcArmor = new Armor("Orc Mail", "Orc created by the finest Orc blacksmiths!", 0, 15);
+let treeBark = new Armor("Tree Bark", "Wood reinforced by the power of fairies", 0, 8);
 
 // Consumables
 

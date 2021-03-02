@@ -56,3 +56,6 @@ let boneShard = new Spell("Bone Shards", "Shoots shards of bones at the enemy!",
 let darkEmbrace = new Spell("Dark Embrace", "Uses dark energy to squeeze the enemy's heart.", 50, 5, 10);
 let soulDrain = new Spell("Soul Drain", 'Drains the targets soul', 100, 3, 20);
 let natureStrangle = new Spell("Root Strangle", 'Uses roots to strangle the enemy!', 60, 4, 10)
+
+var waterSpikes = new Spell("Water Spikes", "Shoots spikes of water at the enemy!", 20, 7, 7);
+var waterWhip = new Spell("Water Whip", "Whips the enemy with a whip made of water!", 10, 4, 4);

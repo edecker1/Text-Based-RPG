@@ -69,7 +69,7 @@ let Battle = {
   },
 
   interactiveInfo : function() {
-    this.interactive.innerHTML = "<div class='btn-group'><button type='button' class='btn btn-dark' onclick='Combat.playerAttack()'>Attack</button><div class='btn-group'><button type='button' class='btn btn-dark dropdown-toggle' data-toggle='dropdown'>Magic</button><div class='btn btn-info dropdown-menu'>"+ Battle.createSpellButtons() +"</div></div><div class='btn-group'><button type='button' class='btn btn-dark dropdown-toggle' data-toggle='dropdown'>Items</button><div class='dropdown-menu'>"+ Battle.createItemButtons() + "</div><button class='btn btn-warning' title='Attempt to run away!' onclick='escape()'>Flee</button></div></div>";
+    this.interactive.innerHTML = "<div class='btn-group'><button type='button' class='btn btn-dark' onclick='Combat.playerAttack()'>Attack</button><div class='btn-group'><button type='button' class='btn btn-dark dropdown-toggle' data-toggle='dropdown'>Magic</button><div class='btn btn-info dropdown-menu'>"+ Battle.createSpellButtons() +"</div></div><div class='btn-group'><button type='button' class='btn btn-dark dropdown-toggle' data-toggle='dropdown'>Items</button><div class='dropdown-menu'>"+ Battle.createItemButtons() + "</div><button class='btn btn-warning' title='Attempt to run away!' onclick='Combat.escape()'>Flee</button></div></div>";
   },
 
   textBoxStart : function() {
@@ -81,7 +81,7 @@ let Battle = {
   },
 
   enemyInfo : function() {
-    if (this.e.isSpellCaster() === true) {
+    if (this.e instanceof SpellCaster) {
       this.enemy.innerHTML = "<h4>Enemy</h4><h6 title=' " + this.e.description + "'>Name: <small><span " + color2(1) + "> " + this.e.name + "</span></small></h6><h6>Health: <small><span " + color(this.e.hp, this.e.maxHp) + ">" + this.e.hp + "</span> / " + this.e.maxHp + "</small></h6><h6>Mana: <small><span " + color(this.e.mp, this.e.maxMp) + ">" + this.e.mp + "</span> / " + this.e.maxMp + "</small></h6><h6 title='"+ this.e.equipped.description +"'>Weapon: <small>" + this.e.equipped.name + "</small></h6><h6 title='"+ this.e.armor.description + "'>Armor: <small>" + this.e.armor.name + "</small></h6>";
     } else {
       this.enemy.innerHTML = "<h3>Enemy</h3><h6 title=' " + this.e.description + "'>Name: <small><span " + color2(1) + "> "  + this.e.name + "</span></small></h6><h6>Health: <small><span " + color(this.e.hp, this.e.maxHp) + ">" + this.e.hp + "</span> / " + this.e.maxHp + "</small></h6><h6 title='"+ this.e.equipped.description +"'>Weapon: <small>" + this.e.equipped.name + "</small></h6><h6 title='"+ this.e.armor.description + "'>Armor: <small>" + this.e.armor.name + "</small></h6>";
@@ -107,10 +107,14 @@ let Battle = {
   winScreen : function() {
     GameManager.clear()
     start.innerHTML = "<br><div class='container'><h4>Congratulations! You have defeated "+this.e.name+"!</h4><br><h5>You have gained <span class='badge badge-warning'>"+Combat.loot()+" gold coins<span>!</h5></div><br><button class='btn btn-dark' onclick='GameManager.goback()'>Back</button>"
+    GameManager.battleTime = false;
   },
 
   newEnemy : function() {
-    this.e = new Enemy('Rabid Dog', 'A crazed dog on the loose!', 15, 15, 0, 0, claws, fur, 40, [scratch]);
+    let location = me.loc();
+    console.log(location.name + " is the location");
+    this.e = location.pickEnemy();
+    this.e.setHealth();
   }
 
 

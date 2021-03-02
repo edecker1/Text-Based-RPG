@@ -15,15 +15,16 @@
     <script src="js/saveSystem.js" defer></script>
     <script src="js/magic.js" defer></script>
     <script src="js/combat.js" defer></script>
-    <script src="js/battle.js" defer></script>
     <script src="js/items.js" defer></script>
-    <script src="js/player.js" defer></script>
-    <script src="js/GameManager.js" defer></script>
-    <script src="js/travel.js" defer></script>
     <script src="js/enemy.js" defer></script>
+    <script src="js/player.js" defer></script>
+    <script src="js/travel.js" defer></script>
     <script src="js/shops.js" defer></script>
+    <script src="js/battle.js" defer></script>
+    <script src="js/GameManager.js" defer></script>
+
   </head>
-  <body class='bg' >
+  <body class='bg' onload='SaveSystem.checkSaves()' >
     <div class="header title" id='head'>
       <div class='container fight'>
         <h1 class='display-1'>TBSC II</h1>
@@ -40,7 +41,7 @@
       <button class='btn btn-dark' onclick='GameManager.createHero()'>Create New</button>
       <br>
       <br>
-      <button class='btn btn-light' onclick='loadScreen()'>Load Hero</button>
+      <button class='btn btn-light' onclick='SaveSystem.loadScreen()'>Load Hero</button>
       <br>
       <br>
       <button class='btn btn-primary' disabled title='Not implemented yet'>View Highschore</button>
@@ -48,7 +49,6 @@
     </div>
     
     <div class = 'fight' id='standby'>
-
     </div>
 
     <div class='fight' id='shop'></div>
